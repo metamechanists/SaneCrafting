@@ -2,7 +2,6 @@ package org.metamechanists.sanecrafting;
 
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
-import lombok.experimental.UtilityClass;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
@@ -10,10 +9,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 
-@UtilityClass
 public class Util {
     // Technically could lead to clashes if two shaped recipes for same item but... hopefully not...
-    public @NotNull String generateRecipeId(@NotNull ItemStack output) {
+    public static @NotNull String generateRecipeId(@NotNull ItemStack output) {
         String normalisedName = PlainTextComponentSerializer.plainText()
                 .serialize(output.displayName())
                 .toLowerCase()
@@ -22,7 +20,7 @@ public class Util {
         return "sanecrafting_" + normalisedName;
     }
 
-    public @Nullable <T extends SlimefunItem> T findMultiblock(Class<T> clazz) {
+    public static @Nullable <T extends SlimefunItem> T findMultiblock(Class<T> clazz) {
         for (SlimefunItem item : Slimefun.getRegistry().getEnabledSlimefunItems()) {
             if (clazz.isInstance(item)) {
                 return clazz.cast(item);
