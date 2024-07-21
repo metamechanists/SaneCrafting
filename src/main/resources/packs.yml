@@ -1,0 +1,4 @@
+base:
+  description: "Assets needed to play on Meta Mechanists (chat icons, etc)"
+  url: "https://resourcepack.metamechanists.org/MetaResourcePack.zip"
+  required: true

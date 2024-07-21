@@ -1,0 +1,9 @@
+name: SaneCrafting
+authors: [Idra]
+
+main: org.metamechanists.sanecrafting.SaneCrafting
+version: '${project.version}'
+api-version: 1.18
+
+depend:
+  - Slimefun
