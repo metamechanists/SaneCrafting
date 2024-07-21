@@ -12,14 +12,14 @@ import org.jetbrains.annotations.Nullable;
 
 @UtilityClass
 public class Util {
-    public @NotNull String generateRecipeId(@NotNull ItemStack output, int recipeIndex) {
-        // Use index to avoid ID clash if two recipes for same item
+    // Technically could lead to clashes if two shaped recipes for same item but... hopefully not...
+    public @NotNull String generateRecipeId(@NotNull ItemStack output) {
         String normalisedName = PlainTextComponentSerializer.plainText()
                 .serialize(output.displayName())
                 .toLowerCase()
                 .replace(' ', '_')
                 .replaceAll("[^a-z0-9/._\\-]", ""); // remove characters not allowed in id
-        return "sanecrafting_" + recipeIndex + "_" + normalisedName;
+        return "sanecrafting_" + normalisedName;
     }
 
     public @Nullable <T extends SlimefunItem> T findMultiblock(Class<T> clazz) {
