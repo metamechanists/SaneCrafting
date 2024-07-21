@@ -12,10 +12,10 @@ import java.lang.reflect.Modifier;
 
 
 @UtilityClass
-public class ChangeRecipeTypePatch {
+public class RecipeLorePatch {
     private final ItemStack craftingTableRecipe = new CustomItemStack(Material.CRAFTING_TABLE, "Crafting Table");
 
-    private void apply() {
+    public void apply() {
         try {
             Field field = RecipeType.ENHANCED_CRAFTING_TABLE.getClass().getField("");
             field.setAccessible(true);
