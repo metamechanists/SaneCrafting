@@ -105,6 +105,7 @@ public class EnhancedCraftingTablePatch {
         for (Entry<Character, ItemStack> entry : ingredients.entrySet()) {
             recipe.setIngredient(entry.getKey(), entry.getValue());
         }
+        Bukkit.getLogger().info(recipe.getResult().getItemMeta().getDisplayName());
         Bukkit.getServer().addRecipe(recipe);
     }
 
