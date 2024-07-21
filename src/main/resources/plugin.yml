@@ -2,7 +2,7 @@ name: SaneCrafting
 authors: [Idra]
 
 main: org.metamechanists.sanecrafting.SaneCrafting
-version: '${project.version}'
+version: '0.1'
 api-version: 1.18
 
 depend:
