@@ -19,7 +19,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 
 
@@ -38,21 +41,22 @@ public final class SaneCrafting extends JavaPlugin implements SlimefunAddon {
                     continue;
                 }
 
-                ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(this, item.getId()), item.getItem());
                 getServer().getLogger().info("" + item.getRecipe().length);
                 List<ItemStack> items = Arrays.asList(item.getRecipe());
 
                 // Convert to shape
                 String itemCharacters = "abcdefghi";
                 List<String> shape = new ArrayList<>(List.of("abc", "def", "ghi"));
+                Map<Character, ItemStack> ingredients = new HashMap<>();
                 for (int y = 0; y < 3; y++) {
                     for (int x = 0; x < 3; x++) {
                         int i = x*3 + y;
                         char character = itemCharacters.charAt(i);
-                        if (items.get(i) == null) {
+                        ItemStack itemStack = items.get(i);
+                        if (itemStack == null) {
                             shape.set(y, shape.get(y).replace(character, ' '));
                         } else {
-                            recipe.setIngredient(character, item.getItem());
+                            ingredients.put(character, itemStack);
                         }
                     }
                 }
@@ -91,8 +95,11 @@ public final class SaneCrafting extends JavaPlugin implements SlimefunAddon {
 
                 getServer().getLogger().info(Arrays.toString(shape.toArray()));
 
+                ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(this, item.getId()), item.getItem());
                 recipe.shape(shape.toArray(new String[]{}));
-
+                for (Entry<Character, ItemStack> entry : ingredients.entrySet()) {
+                    recipe.setIngredient(entry.getKey(), entry.getValue());
+                }
                 getServer().addRecipe(recipe);
             }
         }, 1);
