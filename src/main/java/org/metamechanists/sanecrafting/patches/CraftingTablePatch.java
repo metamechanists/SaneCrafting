@@ -3,6 +3,7 @@ package org.metamechanists.sanecrafting.patches;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.multiblocks.EnhancedCraftingTable;
+import io.github.thebusybiscuit.slimefun4.implementation.items.multiblocks.Smeltery;
 import lombok.experimental.UtilityClass;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
@@ -11,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.jetbrains.annotations.Nullable;
 import org.metamechanists.sanecrafting.SaneCrafting;
+import org.metamechanists.sanecrafting.Util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,18 +28,10 @@ import static org.metamechanists.sanecrafting.Util.generateRecipeId;
 @UtilityClass
 public class CraftingTablePatch {
     private @Nullable List<ItemStack[]> getRecipes() {
-        EnhancedCraftingTable enhancedCraftingTable = null;
-        for (SlimefunItem item : Slimefun.getRegistry().getEnabledSlimefunItems()) {
-            if (item instanceof EnhancedCraftingTable table) {
-                enhancedCraftingTable = table;
-            }
-        }
-
+        EnhancedCraftingTable enhancedCraftingTable = Util.findMultiblock(EnhancedCraftingTable.class);
         if (enhancedCraftingTable == null) {
-            Bukkit.getLogger().severe("Failed to initialise SaneCrafting; EnhancedCraftingTable does not exist!");
             return null;
         }
-
         return enhancedCraftingTable.getRecipes();
     }
 
