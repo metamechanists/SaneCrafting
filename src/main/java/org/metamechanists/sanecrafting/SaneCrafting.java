@@ -7,7 +7,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
 import org.metamechanists.sanecrafting.patches.CraftingTablePatch;
-import org.metamechanists.sanecrafting.patches.FurnacePatch;
 import org.metamechanists.sanecrafting.patches.RecipeLorePatch;
 import org.metamechanists.sanecrafting.patches.UsableInWorkbenchPatch;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.updater.BlobBuildUpdater;
@@ -29,7 +28,6 @@ public final class SaneCrafting extends JavaPlugin implements SlimefunAddon {
         Bukkit.getScheduler().scheduleSyncDelayedTask(this, () -> {
             UsableInWorkbenchPatch.apply();
             CraftingTablePatch.apply();
-            FurnacePatch.apply();
             RecipeLorePatch.apply();
         }, 1);
     }
