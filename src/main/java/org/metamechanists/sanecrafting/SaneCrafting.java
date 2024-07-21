@@ -7,7 +7,10 @@ package org.metamechanists.sanecrafting;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import io.github.thebusybiscuit.slimefun4.core.multiblocks.MultiBlock;
+import io.github.thebusybiscuit.slimefun4.core.multiblocks.MultiBlockMachine;
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
+import io.github.thebusybiscuit.slimefun4.implementation.items.multiblocks.EnhancedCraftingTable;
 import lombok.Getter;
 import lombok.NonNull;
 import org.bukkit.Bukkit;
@@ -36,13 +39,23 @@ public final class SaneCrafting extends JavaPlugin implements SlimefunAddon {
 
         // lol
         Bukkit.getScheduler().scheduleSyncDelayedTask(this, () -> {
+            EnhancedCraftingTable enhancedCraftingTable = null;
             for (SlimefunItem item : Slimefun.getRegistry().getEnabledSlimefunItems()) {
-                if (!item.getRecipeType().equals(RecipeType.ENHANCED_CRAFTING_TABLE)) {
-                    continue;
+                if (item instanceof EnhancedCraftingTable table) {
+                    enhancedCraftingTable = table;
                 }
+            }
+            if (enhancedCraftingTable == null) {
+                getServer().getLogger().severe("Failed to initialise SaneCrafting; EnhancedCraftingTable does not exist!");
+                return;
+            }
 
-                getServer().getLogger().info("" + item.getRecipe().length);
-                List<ItemStack> items = Arrays.asList(item.getRecipe());
+            List<ItemStack[]> recipes = enhancedCraftingTable.getRecipes();
+            for (int j = 0; j < recipes.size(); j += 2) {
+                ItemStack[] input = recipes.get(j);
+                ItemStack output = recipes.get(j+1)[0];
+
+                List<ItemStack> items = Arrays.asList(input);
 
                 // Convert to shape
                 String itemCharacters = "abcdefghi";
@@ -95,7 +108,12 @@ public final class SaneCrafting extends JavaPlugin implements SlimefunAddon {
 
                 getServer().getLogger().info(Arrays.toString(shape.toArray()));
 
-                ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(this, item.getId()), item.getItem());
+                String id = "sanecrafting_" + j / 2 + "_" + output.displayName()
+                        .toString()
+                        .replace(' ', '_')
+                        .toLowerCase();
+
+                ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(this, id), output);
                 recipe.shape(shape.toArray(new String[]{}));
                 for (Entry<Character, ItemStack> entry : ingredients.entrySet()) {
                     recipe.setIngredient(entry.getKey(), entry.getValue());
