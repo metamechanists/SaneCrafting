@@ -38,6 +38,7 @@ public final class SaneCrafting extends JavaPlugin implements SlimefunAddon {
                 }
 
                 ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(this, item.getId()), item.getItem());
+                getServer().getLogger().info("" + recipe);
                 List<ItemStack> items = new ArrayList<>(List.of(item.getRecipe()));
 
                 // Convert to shape
