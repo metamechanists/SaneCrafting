@@ -44,7 +44,7 @@ public final class SaneCrafting extends JavaPlugin implements SlimefunAddon {
 
                 // Convert to shape
                 String itemCharacters = "abcdefghi";
-                List<String> shape = new ArrayList<>(List.of("   ", "   ", "   "));
+                List<String> shape = new ArrayList<>(List.of("abc", "def", "ghi"));
                 for (int y = 0; y < 3; y++) {
                     for (int x = 0; x < 3; x++) {
                         int i = x*3 + y;
