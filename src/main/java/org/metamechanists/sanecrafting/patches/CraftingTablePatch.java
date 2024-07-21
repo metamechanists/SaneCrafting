@@ -84,7 +84,7 @@ public class CraftingTablePatch {
             }
         }
 
-        String id = generateRecipeId(output, recipeIndex);
+        String id = generateRecipeId(output);
         ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(SaneCrafting.getInstance(), id), output);
         recipe.shape(shape.toArray(new String[]{}));
         for (Entry<Character, ItemStack> entry : ingredients.entrySet()) {
