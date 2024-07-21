@@ -108,10 +108,13 @@ public final class SaneCrafting extends JavaPlugin implements SlimefunAddon {
 
                 getServer().getLogger().info(Arrays.toString(shape.toArray()));
 
+                // Use index to avoid ID clash if two recipes for same item
                 String id = "sanecrafting_" + j / 2 + "_" + output.displayName()
                         .toString()
                         .replace(' ', '_')
                         .toLowerCase();
+
+                getServer().getLogger().info(id);
 
                 ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(this, id), output);
                 recipe.shape(shape.toArray(new String[]{}));
