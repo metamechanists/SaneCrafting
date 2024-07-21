@@ -77,7 +77,7 @@
         <dependency>
             <groupId>com.github.Slimefun</groupId>
             <artifactId>Slimefun4</artifactId>
-            <version>ddb7ebd134</version>
+            <version>RC-37</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

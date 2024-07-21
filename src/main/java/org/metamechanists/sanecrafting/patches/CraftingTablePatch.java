@@ -9,7 +9,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.metamechanists.sanecrafting.SaneCrafting;
 
@@ -20,6 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+
+import static org.metamechanists.sanecrafting.Util.generateRecipeId;
 
 
 @UtilityClass
@@ -38,16 +39,6 @@ public class CraftingTablePatch {
         }
 
         return enhancedCraftingTable.getRecipes();
-    }
-
-    private @NotNull String generateRecipeId(@NotNull ItemStack output, int recipeIndex) {
-        // Use index to avoid ID clash if two recipes for same item
-        String normalisedName = PlainTextComponentSerializer.plainText()
-                .serialize(output.displayName())
-                .toLowerCase()
-                .replace(' ', '_')
-                .replaceAll("[^a-z0-9/._\\-]", ""); // remove characters not allowed in id
-        return "sanecrafting_" + recipeIndex + "_" + normalisedName;
     }
 
     private void convertRecipe(List<ItemStack> input, ItemStack output, int recipeIndex) {
@@ -123,7 +114,7 @@ public class CraftingTablePatch {
                 convertRecipe(Arrays.asList(input), output, j / 2);
             } catch (RuntimeException e) {
                 String name = PlainTextComponentSerializer.plainText().serialize(output.displayName());
-                Bukkit.getLogger().severe("Failed to convert recipe for " + name);
+                Bukkit.getLogger().severe("Failed to convert Enhanced Crafting Table recipe for " + name);
                 e.printStackTrace();
                 continue;
             }
