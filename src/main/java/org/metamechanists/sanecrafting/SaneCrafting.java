@@ -13,6 +13,7 @@ import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.multiblocks.EnhancedCraftingTable;
 import lombok.Getter;
 import lombok.NonNull;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
@@ -109,10 +110,11 @@ public final class SaneCrafting extends JavaPlugin implements SlimefunAddon {
                 getServer().getLogger().info(Arrays.toString(shape.toArray()));
 
                 // Use index to avoid ID clash if two recipes for same item
-                String id = "sanecrafting_" + j / 2 + "_" + output.displayName()
-                        .toString()
-                        .replace(' ', '_')
-                        .toLowerCase();
+                String id = "sanecrafting_" + j / 2 + "_"
+                        + PlainTextComponentSerializer.plainText()
+                            .serialize(output.displayName())
+                            .replace(' ', '_')
+                            .toLowerCase();
 
                 getServer().getLogger().info(id);
 
