@@ -18,6 +18,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,7 +40,7 @@ public final class SaneCrafting extends JavaPlugin implements SlimefunAddon {
 
                 ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(this, item.getId()), item.getItem());
                 getServer().getLogger().info("" + item.getRecipe().length);
-                List<ItemStack> items = new ArrayList<>(List.of(item.getRecipe()));
+                List<ItemStack> items = Arrays.asList(item.getRecipe());
 
                 // Convert to shape
                 String itemCharacters = "abcdefghi";
