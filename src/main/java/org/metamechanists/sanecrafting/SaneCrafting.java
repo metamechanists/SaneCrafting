@@ -25,11 +25,12 @@ public final class SaneCrafting extends JavaPlugin implements SlimefunAddon {
             new BlobBuildUpdater(this, getFile(), "SaneCrafting").start();
         }
 
+        RecipeLorePatch.apply();
+
         // Patches applied on first tick to ensure everything has loaded
         Bukkit.getScheduler().scheduleSyncDelayedTask(this, () -> {
             UsableInWorkbenchPatch.apply();
             CraftingTablePatch.apply();
-            RecipeLorePatch.apply();
             RecipeBookResearchPatch.apply();
         }, 1);
     }
