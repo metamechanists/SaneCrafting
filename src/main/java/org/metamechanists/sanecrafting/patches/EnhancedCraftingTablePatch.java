@@ -23,8 +23,6 @@ import java.util.Objects;
 
 @UtilityClass
 public class EnhancedCraftingTablePatch {
-    private EnhancedCraftingTablePatch() {}
-
     private @Nullable List<ItemStack[]> getRecipes() {
         EnhancedCraftingTable enhancedCraftingTable = null;
         for (SlimefunItem item : Slimefun.getRegistry().getEnabledSlimefunItems()) {
