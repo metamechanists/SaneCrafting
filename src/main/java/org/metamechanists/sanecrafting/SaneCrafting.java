@@ -10,7 +10,7 @@ import lombok.NonNull;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
-import org.metamechanists.sanecrafting.patches.EnhancedCraftingTablePatch;
+import org.metamechanists.sanecrafting.patches.CraftingTablePatch;
 import org.metamechanists.sanecrafting.patches.UsableInWorkbenchPatch;
 
 
@@ -25,7 +25,7 @@ public final class SaneCrafting extends JavaPlugin implements SlimefunAddon {
         // Patches applied on first tick to ensure everything has loaded
         Bukkit.getScheduler().scheduleSyncDelayedTask(this, () -> {
             UsableInWorkbenchPatch.apply();
-            EnhancedCraftingTablePatch.apply();
+            CraftingTablePatch.apply();
         }, 1);
     }
 

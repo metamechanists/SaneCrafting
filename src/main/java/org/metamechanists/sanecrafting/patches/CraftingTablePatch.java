@@ -23,7 +23,7 @@ import java.util.Objects;
 
 
 @UtilityClass
-public class EnhancedCraftingTablePatch {
+public class CraftingTablePatch {
     private @Nullable List<ItemStack[]> getRecipes() {
         EnhancedCraftingTable enhancedCraftingTable = null;
         for (SlimefunItem item : Slimefun.getRegistry().getEnabledSlimefunItems()) {
@@ -105,7 +105,6 @@ public class EnhancedCraftingTablePatch {
         for (Entry<Character, ItemStack> entry : ingredients.entrySet()) {
             recipe.setIngredient(entry.getKey(), entry.getValue());
         }
-        Bukkit.getLogger().info(recipe.getResult().getItemMeta().getDisplayName());
         Bukkit.getServer().addRecipe(recipe);
     }
 

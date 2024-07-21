@@ -2,18 +2,26 @@ package org.metamechanists.sanecrafting.patches;
 
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
-import lombok.experimental.UtilityClass;
-import org.metamechanists.sanecrafting.patches.usable.in.workbench.CraftingTableListener;
+import org.bukkit.Bukkit;
+import org.bukkit.event.Event.Result;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.PrepareItemCraftEvent;
+import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.metamechanists.sanecrafting.SaneCrafting;
 
 import java.util.HashSet;
 import java.util.Set;
 
 
-@UtilityClass
-public class UsableInWorkbenchPatch {
-    public void apply() {
-        Set<String> usableInWorkbench = new HashSet<>();
+public final class UsableInWorkbenchPatch implements Listener {
+    private static final Set<String> usableInWorkbench = new HashSet<>();
 
+    private UsableInWorkbenchPatch() {}
+
+    public static void apply() {
         for (SlimefunItem item : Slimefun.getRegistry().getEnabledSlimefunItems()) {
             if (item.isUseableInWorkbench()) {
                 usableInWorkbench.add(item.getId());
@@ -21,6 +29,49 @@ public class UsableInWorkbenchPatch {
             item.setUseableInWorkbench(true);
         }
 
-        CraftingTableListener.register(usableInWorkbench);
+        Bukkit.getServer().getPluginManager().registerEvents(new UsableInWorkbenchPatch(), SaneCrafting.getInstance());
+    }
+
+    @SuppressWarnings("Convert2streamapi")
+    @EventHandler
+    public static void onCraft(@NotNull CraftItemEvent e) {
+        // If we are crafting a slimefun item, allow the craft
+        if (SlimefunItem.getByItem(e.getInventory().getResult()) != null) {
+            return;
+        }
+
+        // Otherwise go through with standard checks to make sure we're not trying to craft a vanilla item with SF ingredients
+        for (ItemStack item : e.getInventory().getContents()) {
+            SlimefunItem sfItem = SlimefunItem.getByItem(item);
+
+            if (sfItem != null && !usableInWorkbench.contains(sfItem.getId())) {
+                e.setResult(Result.DENY);
+                break;
+            }
+        }
+    }
+
+    @SuppressWarnings("Convert2streamapi")
+    @EventHandler
+    public static void onPrepareCraft(@NotNull PrepareItemCraftEvent e) {
+        ItemStack result = e.getInventory().getResult();
+        if (result == null) {
+            return;
+        }
+
+        // If we are crafting a slimefun item, allow the craft
+        if (SlimefunItem.getByItem(result) != null) {
+            return;
+        }
+
+        // Otherwise go through with standard checks to make sure we're not trying to craft a vanilla item with SF ingredients
+        for (ItemStack item : e.getInventory().getContents()) {
+            SlimefunItem sfItem = SlimefunItem.getByItem(item);
+
+            if (sfItem != null && !usableInWorkbench.contains(sfItem.getId())) {
+                e.getInventory().setResult(null);
+                break;
+            }
+        }
     }
 }
