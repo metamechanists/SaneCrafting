@@ -48,7 +48,7 @@ public final class SaneCrafting extends JavaPlugin implements SlimefunAddon {
                 for (int y = 0; y < 3; y++) {
                     for (int x = 0; x < 3; x++) {
                         int i = x*3 + y;
-                        char character = itemCharacters.charAt(x);
+                        char character = itemCharacters.charAt(i);
                         if (items.get(i) == null) {
                             shape.set(y, shape.get(y).replace(character, ' '));
                         } else {
