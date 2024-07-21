@@ -30,7 +30,7 @@ public final class SaneCrafting extends JavaPlugin implements SlimefunAddon {
             UsableInWorkbenchPatch.apply();
             CraftingTablePatch.apply();
             FurnacePatch.apply();
-            RecipeLorePatch.apply()
+            RecipeLorePatch.apply();
         }, 1);
     }
 
