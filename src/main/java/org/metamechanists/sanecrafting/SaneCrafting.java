@@ -80,6 +80,7 @@ public final class SaneCrafting extends JavaPlugin implements SlimefunAddon {
                     }
                     if (allRowsEmptyAtX) {
                         for (int y = shape.size() - 1; y > 0; y--) {
+                            getServer().getLogger().info("yeeting " + shape.get(y));
                             String newRow = new StringBuilder(shape.get(y))
                                     .deleteCharAt(x)
                                     .toString();
@@ -87,6 +88,8 @@ public final class SaneCrafting extends JavaPlugin implements SlimefunAddon {
                         }
                     }
                 }
+
+                getServer().getLogger().info(Arrays.toString(shape.toArray()));
 
                 recipe.shape(shape.toArray(new String[]{}));
 
