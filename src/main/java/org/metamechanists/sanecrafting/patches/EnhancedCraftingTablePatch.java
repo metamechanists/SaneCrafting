@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.metamechanists.sanecrafting.SaneCrafting;
 
@@ -37,6 +38,16 @@ public class EnhancedCraftingTablePatch {
         }
 
         return enhancedCraftingTable.getRecipes();
+    }
+
+    private @NotNull String generateRecipeId(@NotNull ItemStack output, int recipeIndex) {
+        // Use index to avoid ID clash if two recipes for same item
+        String normalisedName = PlainTextComponentSerializer.plainText()
+                .serialize(output.displayName())
+                .toLowerCase()
+                .replace(' ', '_')
+                .replaceAll("[^a-z0-9/._\\-]", ""); // remove characters not allowed in id
+        return "sanecrafting_" + recipeIndex + "_" + normalisedName;
     }
 
     private void convertRecipe(List<ItemStack> input, ItemStack output, int recipeIndex) {
@@ -88,22 +99,13 @@ public class EnhancedCraftingTablePatch {
             }
         }
 
-        // Use index to avoid ID clash if two recipes for same item
-        String normalisedName = PlainTextComponentSerializer.plainText()
-                .serialize(output.displayName())
-                .toLowerCase()
-                .replace(' ', '_')
-                .replaceAll("[^a-z0-9/._\\-]", ""); // remove characters not allowed in id
-        String id = "sanecrafting_" + recipeIndex + "_" + normalisedName;
-
+        String id = generateRecipeId(output, recipeIndex);
         ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(SaneCrafting.getInstance(), id), output);
         recipe.shape(shape.toArray(new String[]{}));
         for (Entry<Character, ItemStack> entry : ingredients.entrySet()) {
             recipe.setIngredient(entry.getKey(), entry.getValue());
         }
         Bukkit.getServer().addRecipe(recipe);
-
-        throw new RuntimeException("oh no");
     }
 
     public void apply() {
@@ -121,7 +123,8 @@ public class EnhancedCraftingTablePatch {
                 convertRecipe(Arrays.asList(input), output, j / 2);
             } catch (RuntimeException e) {
                 String name = PlainTextComponentSerializer.plainText().serialize(output.displayName());
-                Bukkit.getLogger().severe("Failed to convert recipe for " + name + ": " + e);
+                Bukkit.getLogger().severe("Failed to convert recipe for " + name);
+                e.printStackTrace();
                 continue;
             }
 
