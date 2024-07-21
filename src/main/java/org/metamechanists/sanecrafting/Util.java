@@ -9,7 +9,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 
-public class Util {
+public final class Util {
+    private Util() {}
+
     // Technically could lead to clashes if two shaped recipes for same item but... hopefully not...
     public static @NotNull String generateRecipeId(@NotNull ItemStack output) {
         String normalisedName = PlainTextComponentSerializer.plainText()

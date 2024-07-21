@@ -36,6 +36,12 @@ public class CraftingTablePatch {
     }
 
     private void convertRecipe(List<ItemStack> input, ItemStack output, int recipeIndex) {
+        // Remove recipe if already registered
+        NamespacedKey key = new NamespacedKey(SaneCrafting.getInstance(), generateRecipeId(output));
+        if (Bukkit.getServer().getRecipe(key) != null) {
+            Bukkit.getServer().removeRecipe(key);
+        }
+
         // Convert to shape
         String itemCharacters = "abcdefghi";
         List<String> shape = new ArrayList<>(List.of("abc", "def", "ghi"));
@@ -84,8 +90,7 @@ public class CraftingTablePatch {
             }
         }
 
-        String id = generateRecipeId(output);
-        ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(SaneCrafting.getInstance(), id), output);
+        ShapedRecipe recipe = new ShapedRecipe(key, output);
         recipe.shape(shape.toArray(new String[]{}));
         for (Entry<Character, ItemStack> entry : ingredients.entrySet()) {
             recipe.setIngredient(entry.getKey(), entry.getValue());
