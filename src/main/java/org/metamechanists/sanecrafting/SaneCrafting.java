@@ -3,6 +3,7 @@ package org.metamechanists.sanecrafting;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import lombok.Getter;
 import lombok.NonNull;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
@@ -14,6 +15,7 @@ import io.github.thebusybiscuit.slimefun4.libraries.dough.updater.BlobBuildUpdat
 
 
 public final class SaneCrafting extends JavaPlugin implements SlimefunAddon {
+    private static final int BSTATS_ID = 22737;
     @Getter
     private static SaneCrafting instance;
 
@@ -25,6 +27,7 @@ public final class SaneCrafting extends JavaPlugin implements SlimefunAddon {
             new BlobBuildUpdater(this, getFile(), "SaneCrafting").start();
         }
 
+        new Metrics(this, BSTATS_ID);
 
         // Patches applied on first tick to ensure everything has loaded
         Bukkit.getScheduler().scheduleSyncDelayedTask(this, () -> {
@@ -33,6 +36,7 @@ public final class SaneCrafting extends JavaPlugin implements SlimefunAddon {
             RecipeBookResearchPatch.apply();
             RecipeLorePatch.apply();
         }, 1);
+
     }
 
     @Override
