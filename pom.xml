@@ -33,8 +33,7 @@
                     <relocations>
                         <relocation>
                             <pattern>org.bstats</pattern>
-                            <!-- Replace this with your package! -->
-                            <shadedPattern>your.package</shadedPattern>
+                            <shadedPattern>org.metamechanists</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
