@@ -39,6 +39,7 @@ public class RecipeLorePatch {
         // lmao
         @Override
         public @NotNull ItemStack getItem(Player p) {
+            Bukkit.getLogger().info("fuck");
             return Slimefun.getLocalization().getRecipeTypeItem(p, RecipeType.SMELTERY);
         }
     }
@@ -57,6 +58,14 @@ public class RecipeLorePatch {
         } catch (IllegalAccessException | IllegalArgumentException | SecurityException | NoSuchFieldException e) {
             Bukkit.getLogger().info("Failed to apply ChangeRecipeTypePatch");
             e.printStackTrace();
+        }
+
+        for (SlimefunItem item : Slimefun.getRegistry().getEnabledSlimefunItems()) {
+            if (!item.getRecipeType().equals(RecipeType.ENHANCED_CRAFTING_TABLE)) {
+                continue;
+            }
+
+            Bukkit.getLogger().info("fuck this, seriously this is ridiculous wtf");
         }
     }
 
