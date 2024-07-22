@@ -1,9 +1,6 @@
 package org.metamechanists.sanecrafting.patches;
 
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
-import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.multiblocks.EnhancedCraftingTable;
-import io.github.thebusybiscuit.slimefun4.implementation.items.multiblocks.Smeltery;
 import lombok.experimental.UtilityClass;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
@@ -27,7 +24,8 @@ import static org.metamechanists.sanecrafting.Util.generateRecipeId;
 
 @UtilityClass
 public class CraftingTablePatch {
-    public @Nullable List<ItemStack[]> getRecipes() {
+    @Nullable
+    private List<ItemStack[]> getRecipes() {
         EnhancedCraftingTable enhancedCraftingTable = Util.findMultiblock(EnhancedCraftingTable.class);
         if (enhancedCraftingTable == null) {
             return null;
