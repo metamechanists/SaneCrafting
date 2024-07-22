@@ -13,6 +13,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.metamechanists.sanecrafting.SaneCrafting;
 import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
@@ -26,7 +27,7 @@ import java.lang.reflect.Modifier;
 public class RecipeLorePatch {
     // god almighty what am I doing
     private final RecipeType FAKE_ENHANCED_CRAFTING_TABLE = new FakeCraftingTableType(
-            new NamespacedKey(Slimefun.instance(), "enhanced_crafting_table"),
+            new NamespacedKey(SaneCrafting.getInstance(), "enhanced_crafting_table"),
             SlimefunItems.ENHANCED_CRAFTING_TABLE,
             "", "&a&oA regular Crafting Table cannot", "&a&ohold this massive Amount of Power...");
 
@@ -52,6 +53,7 @@ public class RecipeLorePatch {
             Object staticFieldBase = unsafe.staticFieldBase(field);
             long staticFieldOffset = unsafe.staticFieldOffset(field);
             unsafe.putObject(staticFieldBase, staticFieldOffset, FAKE_ENHANCED_CRAFTING_TABLE);
+            Bukkit.getLogger().severe(RecipeType.ENHANCED_CRAFTING_TABLE.key().namespace());
         } catch (IllegalAccessException | IllegalArgumentException | SecurityException | NoSuchFieldException e) {
             Bukkit.getLogger().info("Failed to apply ChangeRecipeTypePatch");
             e.printStackTrace();
