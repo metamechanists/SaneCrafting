@@ -53,14 +53,9 @@ public class RecipeLorePatch {
 
                 Bukkit.getLogger().info("fuck this, seriously this is ridiculous wtf");
 
-                Field unsafeField = Unsafe.class.getDeclaredField("theUnsafe");
-                unsafeField.setAccessible(true);
-                Unsafe unsafe = (Unsafe) unsafeField.get(null);
-
                 Field field = item.getClass().getDeclaredField("recipeType");
-                Object staticFieldBase = unsafe.staticFieldBase(field);
-                long staticFieldOffset = unsafe.staticFieldOffset(field);
-                unsafe.putObject(staticFieldBase, staticFieldOffset, FAKE_ENHANCED_CRAFTING_TABLE);
+                field.setAccessible(true);
+                field.set(null, FAKE_ENHANCED_CRAFTING_TABLE);
             }
 //            Field unsafeField = Unsafe.class.getDeclaredField("theUnsafe");
 //            unsafeField.setAccessible(true);
