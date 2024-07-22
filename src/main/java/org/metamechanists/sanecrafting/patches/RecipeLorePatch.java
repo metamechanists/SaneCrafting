@@ -13,6 +13,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -43,12 +44,14 @@ public class RecipeLorePatch {
 
     public void apply() {
         try {
-            Field field = RecipeType.class.getDeclaredField("ENHANCED_CRAFTING_TABLE");
-            Field modifiersField = Field.class.getDeclaredField("modifiers");
-            modifiersField.setAccessible(true);
-            modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+            Field unsafeField = Unsafe.class.getDeclaredField("theUnsafe");
+            unsafeField.setAccessible(true);
+            Unsafe unsafe = (Unsafe) unsafeField.get(null);
 
-            field.set(null, FAKE_ENHANCED_CRAFTING_TABLE);
+            Field field = RecipeType.class.getDeclaredField("ENHANCED_CRAFTING_TABLE");
+            Object staticFieldBase = unsafe.staticFieldBase(field);
+            long staticFieldOffset = unsafe.staticFieldOffset(field);
+            unsafe.putObject(staticFieldBase, staticFieldOffset, FAKE_ENHANCED_CRAFTING_TABLE);
         } catch (IllegalAccessException | IllegalArgumentException | SecurityException | NoSuchFieldException e) {
             Bukkit.getLogger().info("Failed to apply ChangeRecipeTypePatch");
             e.printStackTrace();
