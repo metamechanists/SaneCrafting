@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
+import org.metamechanists.sanecrafting.SaneCrafting;
 
 import java.lang.reflect.Field;
 
@@ -37,11 +38,11 @@ public class RecipeLorePatch {
                 recipeTypeKeyField.set(RecipeType.ENHANCED_CRAFTING_TABLE, KEY);
             }
         } catch (IllegalAccessException | IllegalArgumentException | SecurityException | NoSuchFieldException e) {
-            Bukkit.getLogger().info("Failed to apply ChangeRecipeTypePatch");
+            SaneCrafting.getInstance().getLogger().info("Failed to apply ChangeRecipeTypePatch");
             e.printStackTrace();
             return;
         }
 
-        Bukkit.getLogger().info("Applied RecipeLore patch");
+        SaneCrafting.getInstance().getLogger().info("Applied RecipeLore patch");
     }
 }

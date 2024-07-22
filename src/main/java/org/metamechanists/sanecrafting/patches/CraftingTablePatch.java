@@ -113,7 +113,7 @@ public class CraftingTablePatch {
                 convertRecipe(Arrays.asList(input), output);
             } catch (RuntimeException e) {
                 String name = PlainTextComponentSerializer.plainText().serialize(output.displayName());
-                Bukkit.getLogger().severe("Failed to convert Enhanced Crafting Table recipe for " + name);
+                SaneCrafting.getInstance().getLogger().severe("Failed to convert Enhanced Crafting Table recipe for " + name);
                 e.printStackTrace();
                 continue;
             }
@@ -121,6 +121,6 @@ public class CraftingTablePatch {
             changedRecipes++;
         }
 
-        Bukkit.getLogger().info("Applied CraftingTable patch and converted " + changedRecipes + " Enhanced Crafting Table recipes to regular Crafing Table recipes");
+        SaneCrafting.getInstance().getLogger().info("Applied CraftingTable patch and converted " + changedRecipes + " Enhanced Crafting Table recipes to regular Crafing Table recipes");
     }
 }

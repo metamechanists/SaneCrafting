@@ -29,7 +29,7 @@ public final class Util {
             }
         }
 
-        Bukkit.getLogger().severe("Failed to initialise SaneCrafting; EnhancedCraftingTable does not exist!");
+        SaneCrafting.getInstance().getLogger().severe("Failed to initialise SaneCrafting; EnhancedCraftingTable does not exist!");
         return null;
     }
 }
