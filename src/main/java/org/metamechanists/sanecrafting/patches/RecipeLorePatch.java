@@ -44,9 +44,7 @@ public class RecipeLorePatch {
     public void apply() {
         try {
             Field field = RecipeType.class.getDeclaredField("ENHANCED_CRAFTING_TABLE");
-            field.setAccessible(true);
-
-            Field modifiersField = field.getClass().getDeclaredField("modifiers");
+            Field modifiersField = Field.class.getDeclaredField("modifiers");
             modifiersField.setAccessible(true);
             modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
 
