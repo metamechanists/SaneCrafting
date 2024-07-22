@@ -16,7 +16,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.List;
 
 
 // Once, I saw the mirror in my dreams. It spoke to me.
@@ -26,7 +25,7 @@ import java.util.List;
 public class RecipeLorePatch {
     // god almighty what am I doing
     private final RecipeType FAKE_ENHANCED_CRAFTING_TABLE = new FakeCraftingTableType(
-            new NamespacedKey(Slimefun.instance(), "fake_enhanced_crafting_table"),
+            new NamespacedKey(Slimefun.instance(), "enhanced_crafting_table"),
             SlimefunItems.ENHANCED_CRAFTING_TABLE,
             "", "&a&oA regular Crafting Table cannot", "&a&ohold this massive Amount of Power...");
 
@@ -43,24 +42,39 @@ public class RecipeLorePatch {
     }
 
     public void apply() {
-        for (SlimefunItem item : Slimefun.getRegistry().getEnabledSlimefunItems()) {
-            if (!item.getRecipeType().equals(RecipeType.ENHANCED_CRAFTING_TABLE)) {
-                continue;
-            }
+        try {
+            Field field = RecipeType.class.getField("ENHANCED_CRAFTING_TABLE");
+            field.setAccessible(true);
 
-            try {
-                Field field = item.getClass().getField("recipeType");
-                field.setAccessible(true);
+            Field modifiersField = Field.class.getDeclaredField("modifiers");
+            modifiersField.setAccessible(true);
+            modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
 
-                Field modifiersField = Field.class.getDeclaredField("modifiers");
-                modifiersField.setAccessible(true);
-                modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-
-                field.set(null, FAKE_ENHANCED_CRAFTING_TABLE);
-            } catch (IllegalAccessException | IllegalArgumentException | SecurityException | NoSuchFieldException e) {
-                Bukkit.getLogger().info("Failed to apply ChangeRecipeTypePatch");
-                e.printStackTrace();
-            }
+            field.set(null, FAKE_ENHANCED_CRAFTING_TABLE);
+        } catch (IllegalAccessException | IllegalArgumentException | SecurityException | NoSuchFieldException e) {
+            Bukkit.getLogger().info("Failed to apply ChangeRecipeTypePatch");
+            e.printStackTrace();
         }
     }
+
+//    for (
+//    SlimefunItem item : Slimefun.getRegistry().getEnabledSlimefunItems()) {
+//        if (!item.getRecipeType().equals(RecipeType.ENHANCED_CRAFTING_TABLE)) {
+//            continue;
+//        }
+//
+//        try {
+//            Field field = item.getClass().getField("recipeType");
+//            field.setAccessible(true);
+//
+//            Field modifiersField = Field.class.getDeclaredField("modifiers");
+//            modifiersField.setAccessible(true);
+//            modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+//
+//            field.set(null, FAKE_ENHANCED_CRAFTING_TABLE);
+//        } catch (IllegalAccessException | IllegalArgumentException | SecurityException | NoSuchFieldException e) {
+//            Bukkit.getLogger().info("Failed to apply ChangeRecipeTypePatch");
+//            e.printStackTrace();
+//        }
+//    }
 }
