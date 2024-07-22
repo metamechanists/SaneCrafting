@@ -46,28 +46,38 @@ public class RecipeLorePatch {
 
     public void apply() {
         try {
-            Field unsafeField = Unsafe.class.getDeclaredField("theUnsafe");
-            unsafeField.setAccessible(true);
-            Unsafe unsafe = (Unsafe) unsafeField.get(null);
+            for (SlimefunItem item : Slimefun.getRegistry().getEnabledSlimefunItems()) {
+                if (!item.getRecipeType().equals(RecipeType.ENHANCED_CRAFTING_TABLE)) {
+                    continue;
+                }
 
-            Field field = RecipeType.class.getDeclaredField("ENHANCED_CRAFTING_TABLE");
-            Object staticFieldBase = unsafe.staticFieldBase(field);
-            long staticFieldOffset = unsafe.staticFieldOffset(field);
-            unsafe.putObject(staticFieldBase, staticFieldOffset, FAKE_ENHANCED_CRAFTING_TABLE);
-            Bukkit.getLogger().severe(RecipeType.ENHANCED_CRAFTING_TABLE.key().namespace());
+                Bukkit.getLogger().info("fuck this, seriously this is ridiculous wtf");
+
+                Field unsafeField = Unsafe.class.getDeclaredField("theUnsafe");
+                unsafeField.setAccessible(true);
+                Unsafe unsafe = (Unsafe) unsafeField.get(null);
+
+                Field field = item.getClass().getDeclaredField("recipeType");
+                Object staticFieldBase = unsafe.staticFieldBase(field);
+                long staticFieldOffset = unsafe.staticFieldOffset(field);
+                unsafe.putObject(staticFieldBase, staticFieldOffset, FAKE_ENHANCED_CRAFTING_TABLE);
+            }
+//            Field unsafeField = Unsafe.class.getDeclaredField("theUnsafe");
+//            unsafeField.setAccessible(true);
+//            Unsafe unsafe = (Unsafe) unsafeField.get(null);
+//
+//            Field field = RecipeType.class.getDeclaredField("ENHANCED_CRAFTING_TABLE");
+//            Object staticFieldBase = unsafe.staticFieldBase(field);
+//            long staticFieldOffset = unsafe.staticFieldOffset(field);
+//            unsafe.putObject(staticFieldBase, staticFieldOffset, FAKE_ENHANCED_CRAFTING_TABLE);
+//            Bukkit.getLogger().severe(RecipeType.ENHANCED_CRAFTING_TABLE.key().namespace());
         } catch (IllegalAccessException | IllegalArgumentException | SecurityException | NoSuchFieldException e) {
             Bukkit.getLogger().info("Failed to apply ChangeRecipeTypePatch");
             e.printStackTrace();
         }
-
-        for (SlimefunItem item : Slimefun.getRegistry().getEnabledSlimefunItems()) {
-            if (!item.getRecipeType().equals(RecipeType.ENHANCED_CRAFTING_TABLE)) {
-                continue;
-            }
-
-            Bukkit.getLogger().info("fuck this, seriously this is ridiculous wtf");
-        }
     }
+
+
 
 //    for (
 //    SlimefunItem item : Slimefun.getRegistry().getEnabledSlimefunItems()) {
