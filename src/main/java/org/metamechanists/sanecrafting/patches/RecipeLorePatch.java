@@ -53,7 +53,7 @@ public class RecipeLorePatch {
 
                 Bukkit.getLogger().info("fuck this, seriously this is ridiculous wtf");
 
-                Field field = item.getClass().getSuperclass().getDeclaredField("recipeType");
+                Field field = item.getClass().<SlimefunItem>getSuperclass().getDeclaredField("recipeType");
                 field.setAccessible(true);
                 field.set(null, FAKE_ENHANCED_CRAFTING_TABLE);
             }
