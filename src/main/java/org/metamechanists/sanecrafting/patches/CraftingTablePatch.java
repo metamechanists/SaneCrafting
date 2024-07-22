@@ -27,7 +27,7 @@ import static org.metamechanists.sanecrafting.Util.generateRecipeId;
 
 @UtilityClass
 public class CraftingTablePatch {
-    private @Nullable List<ItemStack[]> getRecipes() {
+    public @Nullable List<ItemStack[]> getRecipes() {
         EnhancedCraftingTable enhancedCraftingTable = Util.findMultiblock(EnhancedCraftingTable.class);
         if (enhancedCraftingTable == null) {
             return null;

@@ -1,6 +1,7 @@
 package org.metamechanists.sanecrafting.patches;
 
 import io.github.bakedlibs.dough.items.CustomItemStack;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
@@ -15,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.List;
 
 
 // Once, I saw the mirror in my dreams. It spoke to me.
@@ -24,7 +26,7 @@ import java.lang.reflect.Modifier;
 public class RecipeLorePatch {
     // god almighty what am I doing
     private final RecipeType FAKE_ENHANCED_CRAFTING_TABLE = new FakeCraftingTableType(
-            new NamespacedKey(Slimefun.instance(), "enhanced_crafting_table"),
+            new NamespacedKey(Slimefun.instance(), "fake_enhanced_crafting_table"),
             SlimefunItems.ENHANCED_CRAFTING_TABLE,
             "", "&a&oA regular Crafting Table cannot", "&a&ohold this massive Amount of Power...");
 
@@ -41,18 +43,24 @@ public class RecipeLorePatch {
     }
 
     public void apply() {
-        try {
-            Field field = RecipeType.class.getField("ENHANCED_CRAFTING_TABLE");
-            field.setAccessible(true);
+        for (SlimefunItem item : Slimefun.getRegistry().getEnabledSlimefunItems()) {
+            if (!item.getRecipeType().equals(RecipeType.ENHANCED_CRAFTING_TABLE)) {
+                continue;
+            }
 
-            Field modifiersField = Field.class.getDeclaredField("modifiers");
-            modifiersField.setAccessible(true);
-            modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+            try {
+                Field field = item.getClass().getField("recipeType");
+                field.setAccessible(true);
 
-            field.set(null, FAKE_ENHANCED_CRAFTING_TABLE);
-        } catch (IllegalAccessException | IllegalArgumentException | SecurityException | NoSuchFieldException e) {
-            Bukkit.getLogger().info("Failed to apply ChangeRecipeTypePatch");
-            e.printStackTrace();
+                Field modifiersField = Field.class.getDeclaredField("modifiers");
+                modifiersField.setAccessible(true);
+                modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+
+                field.set(null, FAKE_ENHANCED_CRAFTING_TABLE);
+            } catch (IllegalAccessException | IllegalArgumentException | SecurityException | NoSuchFieldException e) {
+                Bukkit.getLogger().info("Failed to apply ChangeRecipeTypePatch");
+                e.printStackTrace();
+            }
         }
     }
 }
