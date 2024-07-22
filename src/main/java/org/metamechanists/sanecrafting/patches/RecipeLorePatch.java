@@ -18,7 +18,7 @@ import java.lang.reflect.Field;
 // I woke up, and wrote this code. My life has been 10x better ever since. Follow the mirror.
 @UtilityClass
 public class RecipeLorePatch {
-    private final ItemStack ITEMSTACK = new CustomItemStack(Material.ENDER_CHEST, "&bCrafting Table");
+    private final ItemStack ITEMSTACK = new CustomItemStack(Material.CRAFTING_TABLE, "&bShaped Crafting Recipe");
     private final NamespacedKey KEY = new NamespacedKey("minecraft", "shaped");
 
     public void apply() {
@@ -39,6 +39,9 @@ public class RecipeLorePatch {
         } catch (IllegalAccessException | IllegalArgumentException | SecurityException | NoSuchFieldException e) {
             Bukkit.getLogger().info("Failed to apply ChangeRecipeTypePatch");
             e.printStackTrace();
+            return;
         }
+
+        Bukkit.getLogger().info("Applied RecipeLore patch");
     }
 }

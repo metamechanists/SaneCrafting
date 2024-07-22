@@ -35,7 +35,7 @@ public class CraftingTablePatch {
         return enhancedCraftingTable.getRecipes();
     }
 
-    private void convertRecipe(List<ItemStack> input, ItemStack output, int recipeIndex) {
+    private void convertRecipe(List<ItemStack> input, ItemStack output) {
         // Remove recipe if already registered
         NamespacedKey key = new NamespacedKey(SaneCrafting.getInstance(), generateRecipeId(output));
         if (Bukkit.getServer().getRecipe(key) != null) {
@@ -110,7 +110,7 @@ public class CraftingTablePatch {
             ItemStack output = recipes.get(j + 1)[0];
 
             try {
-                convertRecipe(Arrays.asList(input), output, j / 2);
+                convertRecipe(Arrays.asList(input), output);
             } catch (RuntimeException e) {
                 String name = PlainTextComponentSerializer.plainText().serialize(output.displayName());
                 Bukkit.getLogger().severe("Failed to convert Enhanced Crafting Table recipe for " + name);
@@ -121,6 +121,6 @@ public class CraftingTablePatch {
             changedRecipes++;
         }
 
-        Bukkit.getLogger().info("Converted " + changedRecipes + " Enhanced Crafting Table recipes to regular Crafing Table recipes");
+        Bukkit.getLogger().info("Applied CraftingTable patch and converted " + changedRecipes + " Enhanced Crafting Table recipes to regular Crafing Table recipes");
     }
 }
