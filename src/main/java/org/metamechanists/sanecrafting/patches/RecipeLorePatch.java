@@ -27,9 +27,9 @@ import java.lang.reflect.Modifier;
 public class RecipeLorePatch {
     // god almighty what am I doing
     private final RecipeType FAKE_ENHANCED_CRAFTING_TABLE = new FakeCraftingTableType(
-            new NamespacedKey(SaneCrafting.getInstance(), "enhanced_crafting_table"),
-            SlimefunItems.ENHANCED_CRAFTING_TABLE,
-            "", "&a&oA regular Crafting Table cannot", "&a&ohold this massive Amount of Power...");
+            new NamespacedKey(SaneCrafting.getInstance(), "smeltery"),
+            SlimefunItems.SMELTERY,
+            "man, fuck this");
 
     class FakeCraftingTableType extends RecipeType {
         FakeCraftingTableType(NamespacedKey key, SlimefunItemStack slimefunItem, String... lore) {
