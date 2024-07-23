@@ -9,6 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.jetbrains.annotations.NotNull;
 import org.metamechanists.sanecrafting.SaneCrafting;
 import org.metamechanists.sanecrafting.Util;
@@ -22,6 +23,17 @@ public final class RecipeBookResearchPatch implements Listener {
     public static void apply() {
         Bukkit.getServer().getPluginManager().registerEvents(new RecipeBookResearchPatch(), SaneCrafting.getInstance());
         SaneCrafting.getInstance().getLogger().info("Applied RecipeBookResearch patch");
+    }
+
+    @EventHandler
+    public static void onJoin(@NotNull PlayerJoinEvent e) {
+        if (Slimefun.getRegistry().isResearchingEnabled()) {
+            return;
+        }
+
+        for (SlimefunItem item : Slimefun.getRegistry().getEnabledSlimefunItems()) {
+            e.getPlayer().discoverRecipe(new NamespacedKey(SaneCrafting.getInstance(), Util.generateRecipeId(item.getItem())));
+        }
     }
 
     @EventHandler
