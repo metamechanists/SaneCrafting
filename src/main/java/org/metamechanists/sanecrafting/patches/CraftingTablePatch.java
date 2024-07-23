@@ -46,7 +46,7 @@ public class CraftingTablePatch {
         Map<Character, ItemStack> ingredients = new HashMap<>();
         for (int y = 0; y < 3; y++) {
             for (int x = 0; x < 3; x++) {
-                int i = x * 3 + y;
+                int i = y*3 + x;
                 char character = itemCharacters.charAt(i);
                 ItemStack itemStack = input.get(i);
                 if (itemStack == null) {
@@ -58,7 +58,7 @@ public class CraftingTablePatch {
         }
 
         // Trim vertical
-        for (int y = shape.size() - 1; y > 0; y--) {
+        for (int y = shape.size() - 1; y >= 0; y--) {
             if (Objects.equals(shape.get(y), "   ")) {
                 shape.remove(y);
             }
@@ -70,22 +70,27 @@ public class CraftingTablePatch {
         }
 
         // Trim horizontal
-        for (int x = shape.get(0).length() - 1; x > 0; x--) {
+        for (int x = shape.get(0).length() - 1; x >= 0; x--) {
             boolean allRowsEmptyAtX = true;
-            for (int y = shape.size() - 1; y > 0; y--) {
+            for (int y = shape.size() - 1; y >= 0; y--) {
                 if (shape.get(y).charAt(x) != ' ') {
                     allRowsEmptyAtX = false;
                     break;
                 }
             }
             if (allRowsEmptyAtX) {
-                for (int y = shape.size() - 1; y > 0; y--) {
+                for (int y = shape.size() - 1; y >= 0; y--) {
                     String newRow = new StringBuilder(shape.get(y))
                             .deleteCharAt(x)
                             .toString();
                     shape.set(y, newRow);
                 }
             }
+        }
+
+        if (output.getItemMeta().getDisplayName().contains("magnet")) {
+            Bukkit.getLogger().severe(String.valueOf(shape));
+            Bukkit.getLogger().severe(String.valueOf(ingredients));
         }
 
         ShapedRecipe recipe = new ShapedRecipe(key, output);
