@@ -88,11 +88,6 @@ public class CraftingTablePatch {
             }
         }
 
-        if (output.getItemMeta().getDisplayName().contains("magnet")) {
-            Bukkit.getLogger().severe(String.valueOf(shape));
-            Bukkit.getLogger().severe(String.valueOf(ingredients));
-        }
-
         ShapedRecipe recipe = new ShapedRecipe(key, output);
         recipe.shape(shape.toArray(new String[]{}));
         for (Entry<Character, ItemStack> entry : ingredients.entrySet()) {
