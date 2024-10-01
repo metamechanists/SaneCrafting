@@ -13,8 +13,11 @@ public final class Util {
 
     // Technically could lead to clashes if two shaped recipes for same item but... hopefully not...
     public static @NotNull String generateRecipeId(@NotNull ItemStack output) {
-        String normalisedName = SlimefunItem.getByItem(output).getId()
-                .toLowerCase()
+        return generateRecipeId(SlimefunItem.getByItem(output));
+    }
+
+    public static @NotNull String generateRecipeId(@NotNull SlimefunItem item) {
+        String normalisedName = item.getId().toLowerCase()
                 .replace(' ', '_')
                 .replaceAll("[^a-z0-9/._\\-]", ""); // remove characters not allowed in id
         return "sanecrafting_" + normalisedName;

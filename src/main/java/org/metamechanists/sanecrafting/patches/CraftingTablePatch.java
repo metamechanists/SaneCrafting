@@ -1,5 +1,9 @@
 package org.metamechanists.sanecrafting.patches;
 
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
+import io.github.thebusybiscuit.slimefun4.implementation.items.VanillaItem;
 import io.github.thebusybiscuit.slimefun4.implementation.items.multiblocks.EnhancedCraftingTable;
 import lombok.experimental.UtilityClass;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
@@ -34,8 +38,12 @@ public class CraftingTablePatch {
     }
 
     private void convertRecipe(List<ItemStack> input, ItemStack output) {
+        convertRecipe(generateRecipeId(output), input, output);
+    }
+
+    private void convertRecipe(String recipeId, List<ItemStack> input, ItemStack output) {
         // Remove recipe if already registered
-        NamespacedKey key = new NamespacedKey(SaneCrafting.getInstance(), generateRecipeId(output));
+        NamespacedKey key = new NamespacedKey(SaneCrafting.getInstance(), recipeId);
         if (Bukkit.getServer().getRecipe(key) != null) {
             Bukkit.getServer().removeRecipe(key);
         }
@@ -106,6 +114,10 @@ public class CraftingTablePatch {
         for (int j = 0; j < recipes.size(); j += 2) {
             ItemStack[] input = recipes.get(j);
             ItemStack output = recipes.get(j + 1)[0];
+            if (SlimefunItem.getByItem(output) == null) {
+                // Skip vanilla slimefunitem recipes for now
+                continue;
+            }
 
             try {
                 convertRecipe(Arrays.asList(input), output);
@@ -117,6 +129,19 @@ public class CraftingTablePatch {
             }
 
             changedRecipes++;
+        }
+
+        for (SlimefunItem item : Slimefun.getRegistry().getEnabledSlimefunItems()) {
+            if (item instanceof VanillaItem vanillaItem && item.getRecipeType() == RecipeType.ENHANCED_CRAFTING_TABLE) {
+                try {
+                    convertRecipe(generateRecipeId(vanillaItem), Arrays.asList(vanillaItem.getRecipe()), vanillaItem.getRecipeOutput());
+                    changedRecipes++;
+                } catch (RuntimeException e) {
+                    String name = PlainTextComponentSerializer.plainText().serialize(vanillaItem.getItem().displayName());
+                    SaneCrafting.getInstance().getLogger().severe("Failed to convert Enhanced Crafting Table recipe for " + name);
+                    e.printStackTrace();
+                }
+            }
         }
 
         SaneCrafting.getInstance().getLogger().info("Applied CraftingTable patch and converted " + changedRecipes + " Enhanced Crafting Table recipes to regular Crafing Table recipes");
